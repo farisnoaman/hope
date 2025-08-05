@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  nominatim:
+    image: mediagis/nominatim:4.1
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      PBF: /data/yemen-latest.osm.pbf
+      THREADS: 4
+      POSTGRES_PASSWORD: "\${NOMINATIM_DB_PASS}"
+    volumes:
+      - ./graphhopper-data:/data:ro
+      - nominatim_db:/var/lib/postgresql/12/main
+
+  tileserver:
+    image: overv/openstreetmap-tile-server:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      UPDATES: "false"
+    volumes:
+      - ./graphhopper-data:/var/lib/postgresql/12/main:ro
+      - tileserver_db:/var/lib/postgresql/12/main/data
+
+  graphhopper:
+    build:
+      context: .
+      dockerfile: Dockerfile.graphhopper
+    restart: unless-stopped
+    ports:
+      - "8989:8989"
+    volumes:
+      - ./graphhopper-data:/opt/graphhopper/data:ro
+
+volumes:
+  nominatim_db:
+  tileserver_db:
