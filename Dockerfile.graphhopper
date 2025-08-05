@@ -1,0 +1,15 @@
+FROM eclipse-temurin:21-jdk
+RUN mkdir -p /opt/graphhopper
+WORKDIR /opt/graphhopper
+COPY graphhopper-data /opt/graphhopper/data
+ARG GH_VERSION=7.0
+RUN wget -qO graphhopper.jar \
+    https://github.com/graphhopper/graphhopper/releases/download/${GH_VERSION}/graphhopper-web-${GH_VERSION}.jar
+EXPOSE 8989
+CMD ["sh", "-c", \
+  "java -Xms1g -Xmx2g -jar graphhopper.jar \
+   import \
+   --config /opt/graphhopper/data/config.yml \
+   --datareader.file=/opt/graphhopper/data/yemen-latest.osm.pbf \
+   --storage.location=/opt/graphhopper/data/graphhopper && \
+   java -Xms1g -Xmx2g -jar graphhopper.jar web"]
