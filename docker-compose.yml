@@ -9,7 +9,7 @@ services:
     environment:
       PBF: /data/yemen-latest.osm.pbf
       THREADS: 4
-      POSTGRES_PASSWORD: "\${NOMINATIM_DB_PASS}"
+      POSTGRES_PASSWORD: "${NOMINATIM_DB_PASS}"
     volumes:
       - ./graphhopper-data:/data:ro
       - nominatim_db:/var/lib/postgresql/12/main
