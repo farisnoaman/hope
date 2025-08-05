@@ -1,8 +1,0 @@
-graphhopper:
-  datareader.file: /data/yemen-latest.osm.pbf
-  graph.location: /data/graph-cache
-  graph.flag_encoders: car
-  prepare.ch.weightings: fastest
-server:
-  port: 8989
-
