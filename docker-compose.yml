@@ -37,8 +37,8 @@ services:
     container_name: tileserver
     restart: unless-stopped
     ports:
-      - "80"  # remove if you got port conflict
-    labels:
+   
+       labels:
       - traefik.enable=true
       - traefik.http.routers.tiles.rule=Host(`tiles.hayataxi.online`)
       - traefik.http.routers.tiles.entrypoints=websecure
